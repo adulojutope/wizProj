@@ -1,7 +1,3 @@
-provider "aws" {
-    region = "us-east-1"
-}
-
 variable vpc_cidr_block {}
 variable private_subnet_cidr_blocks {}
 variable public_subnet_cidr_blocks {}
@@ -35,7 +31,7 @@ module "myAppp-vpc" {
 
     private_subnet_tags = {
         "kubernetes.io/cluster/myAppp-eks-cluster" = "shared"
-        "kubernetes.io/role/internal-elb" = 1 
-    }
+        "kubernetes.io/role/internal-elb" = 1
+}
 
 }

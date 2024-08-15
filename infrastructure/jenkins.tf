@@ -1,7 +1,7 @@
 # configured aws provider with proper credentials
 provider "aws" {
   region    = "us-east-1"
-  profile   = "yusuf"
+  profile   = "default"
 }
 
 
@@ -105,7 +105,7 @@ resource "null_resource" "name" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("~/Downloads/devopskey.pem")
+    private_key = file("/home/wizassesment/devopskey.pem")
     host        = aws_instance.ec2_instance.public_ip
   }
 
@@ -129,6 +129,6 @@ resource "null_resource" "name" {
 
 
 # print the url of the jenkins server
-output "website_url" {
-  value     = join ("", ["http://", aws_instance.ec2_instance.public_dns, ":", "8080"])
+output "jenkins_website_url" {
+  value     = join ("", ["http://", aws_instance.ec2_instance.public_dns,":","8080"])
 }
