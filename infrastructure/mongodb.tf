@@ -1,7 +1,7 @@
 # configured aws provider with proper credentials
 # provider "aws" {
 #   region    = "us-east-1"
-#   profile   = "yusuf"
+#   profile   = "dennis"
 # }
 
 # create security group for the ec2 instance
@@ -43,6 +43,14 @@ resource "aws_security_group" "ec2_security_group4" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+ingress {
+    description      = "http access"
+    from_port        = 8085
+    to_port          = 8085
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
   ingress {
     description      = "mongodb access"
     from_port        = 27017
@@ -71,8 +79,27 @@ resource "aws_security_group" "ec2_security_group4" {
   }
 }
 
+
+# use data source to get a registered amazon linux 2 ami
+data "aws_ami" "ubuntu" {
+
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    }
+
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"]
+}
+
 # launch the ec2 instance
-resource "aws_instance" "ec2_instance_jenkins" {
+resource "aws_instance" "ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.small"
   subnet_id              = module.myAppp-vpc.public_subnets[0]
@@ -86,7 +113,7 @@ resource "aws_instance" "ec2_instance_jenkins" {
 }
 
 resource "aws_s3_bucket" "resource_name"{
-  bucket = "basirat-mongo-db-backup"
+  bucket = "meenah-mongo-db-backup"
 
   tags = {
     Name = "mongodb1_backup"
@@ -96,6 +123,6 @@ resource "aws_s3_bucket" "resource_name"{
 
 
 # print the url of the jenkins server
-output "mongo_website_url" {
-  value     = join("", ["http://", aws_instance.ec2_instance_jenkins.public_ip])
+output "website_url" {
+  value     = join("", ["http://", aws_instance.ec2_instance.public_ip])
 }
