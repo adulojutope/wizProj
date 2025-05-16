@@ -4,9 +4,9 @@ pipeline {
         VERSION = "${env.BUILD_ID}"
         AWS_ACCOUNT_ID= credentials('account_id')
         AWS_DEFAULT_REGION="us-east-1"
-        IMAGE_REPO_NAME="wiz_exercise"
+        IMAGE_REPO_NAME="wiz_project"
         IMAGE_TAG= "${env.BUILD_ID}"
-        REPOSITORY_URI = "927572750490.dkr.ecr.us-east-1.amazonaws.com/wiz_exercise"
+        REPOSITORY_URI = "288761754395.dkr.ecr.us-east-1.amazonaws.com/wiz_project"
     }
     stages {
          stage('Logging into AWS ECR') {
